@@ -48,13 +48,18 @@ Full stack blog uygulaması: **React (Mantine UI)** + **Express** + **Prisma** +
 
 Blog için ayrı bir veritabanı (`blog_db`) kullanılır.
 
-**Docker (örn. `local-postgres`, kullanıcı: `admin`):**
+**Docker (örn. `local-postgres`):**
+- Kullanıcı: `admin`
+- Şifre: `password`
+- Varsayılan veritabanı: `panorama3d_db` (bağlanmak için; blog verisi `blog_db` içinde tutulur)
+
+`blog_db` oluşturmak için:
 
 ```bash
 docker exec -it local-postgres psql -U admin -d panorama3d_db -c "CREATE DATABASE blog_db;"
 ```
 
-Veya pgAdmin ile bağlanıp `blog_db` oluşturun.
+Veya pgAdmin ile `admin` kullanıcısıyla bağlanıp `blog_db` oluşturun.
 
 ### 2. Backend
 
@@ -63,7 +68,11 @@ cd backend
 cp .env.example .env
 ```
 
-`.env` içinde `DATABASE_URL` değerini kendi PostgreSQL bilginize göre düzenleyin (ör. `admin` / `password` ve `blog_db`).
+`.env` içinde `DATABASE_URL` değerini kendi PostgreSQL bilginize göre düzenleyin. Docker ile `admin` / `password` kullanıyorsanız örnek:
+
+```
+DATABASE_URL="postgresql://admin:password@localhost:5432/blog_db"
+```
 
 ```bash
 npm install
