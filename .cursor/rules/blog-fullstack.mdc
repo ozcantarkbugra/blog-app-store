@@ -1,0 +1,33 @@
+---
+description: Blog full stack - Express, Prisma, PostgreSQL, React, Mantine
+globs: backend/**/*,frontend/**/*
+alwaysApply: false
+---
+
+# Blog Full Stack Projesi
+
+Bu proje backend (Node.js, Express, Prisma, PostgreSQL) ve frontend (React, Vite, Mantine UI) ile tek bir blog uygulamasıdır.
+
+## Yapı
+
+- API: backend/src — Express server, backend/src/routes/ (posts, categories, authors), backend/prisma/schema.prisma
+- UI: frontend/src — sayfalar frontend/src/pages/, bileşenler frontend/src/components/, API çağrıları frontend/src/api/
+- Veritabanı: PostgreSQL; bağlantı backend/.env içinde DATABASE_URL. Auth yok; sadece public API ve sayfalar.
+
+## API (REST)
+
+Veriler şu uç noktalardan JSON olarak çekilir: GET /api/posts (liste; page, limit, category, author), GET /api/posts/:slug, GET /api/categories, GET /api/categories/:slug/posts, GET /api/authors, GET /api/authors/:id/posts.
+
+## Yeni özellik eklerken
+
+1. Backend: Gerekirse schema.prisma güncelle, migration, route/handler ekle veya güncelle (backend/src/routes/).
+2. Frontend: frontend/src/api/ içinde ilgili fonksiyon; sayfa veya bileşen (pages/, components/); loading ve error state'leri mutlaka kullan.
+3. TypeScript strict; anlamlı isimlendirme.
+
+## Örnek backend GET route
+
+postsRouter.get("/", async (req, res) => { const posts = await prisma.post.findMany({ where: { published: true }, include: { author: true, category: true } }); res.json(posts); });
+
+## Örnek frontend sayfa (Mantine)
+
+useState ve useEffect ile data, loading; getPosts().then(setData); if (loading) return Loader; SimpleGrid ile PostCard listesi.
